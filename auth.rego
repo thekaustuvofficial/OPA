@@ -1,11 +1,10 @@
 package auth
 
-default allow=false
-
 allow if{
     input.user.role == "admin"
 }
 
+# Manager → read/write reports
 allow if{
     input.user.role == "manager"
     input.resource == "reports"
@@ -18,8 +17,10 @@ allow if{
     input.action == "write"
 }
 
+# User → read their own profile
 allow if{
     input.user.role == "user"
     input.resource == "profile"
     input.action == "read"
+    input.user.id == input.resource_owner_id
 }
